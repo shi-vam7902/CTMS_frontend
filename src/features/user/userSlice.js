@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUser, deleteUser, getUsers, getUser } from "./userApi"; 
+import { updateUser, deleteUser, getUsers, getUser ,getUserTasks} from "./userApi"; 
 import { setUser } from '../auth/authSlice'; 
 
 const initialState = {
@@ -52,6 +52,19 @@ export const getUserAsync = createAsyncThunk(
     try {
       const data = await getUser(userId);
       return data.data.user;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getUserTasksAsync = createAsyncThunk(
+  "user/getUserTasks",
+  async ({userId}, { rejectWithValue }) => {
+    try {
+      const data = await getUserTasks(userId);
+      console.log("userSlice data",data)
+      return data.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -124,6 +137,19 @@ const userSlice = createSlice({
         state.successMessage = "User fetched successfully.";
       })
       .addCase(getUserAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+      })
+      .addCase(getUserTasksAsync.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(getUserTasksAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = "User task get successfully.";
+      })
+      .addCase(getUserTasksAsync.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload;
       });

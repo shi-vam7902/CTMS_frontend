@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Label, Textarea, TextInput } from "flowbite-react";
+import { Button, Label, Textarea, TextInput, Alert } from "flowbite-react";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersAsync } from "../../features/user/userSlice";
@@ -15,6 +15,7 @@ function DashProjects() {
     user: [],
     status: "66615447f6ad8ae9824701cf", // Set status directly in the initial state
   });
+  const [success, setSuccess] = useState("");
 
   const setData = (e) => {
     const { name, value } = e.target;
@@ -39,10 +40,12 @@ function DashProjects() {
       try {
         const result = await dispatch(getUsersAsync()).unwrap();
         if (result) {
-          setUsers(result.users.map((user) => ({
-            value: user._id,
-            label: user.username,
-          })));
+          setUsers(
+            result.users.map((user) => ({
+              value: user._id,
+              label: user.username,
+            }))
+          );
         }
       } catch (error) {
         console.log(error.message);
@@ -60,11 +63,12 @@ function DashProjects() {
       .unwrap()
       .then((response) => {
         console.log("Project added successfully", response);
+        setSuccess("Project added successfully");
         setFormData({
           projectName: "",
           projectDesc: "",
           user: [],
-          status: "66615447f6ad8ae9824701cf", // Reset status as well
+          status: "66615447f6ad8ae9824701cf",
         });
       })
       .catch((error) => {
@@ -74,10 +78,15 @@ function DashProjects() {
 
   return (
     <div className="max-w-lg my-6 mx-auto p-6 bg-white rounded-lg shadow-md w-full">
-      <h1 className="text-2xl font-semibold text-center mb-6">Add New Project</h1>
+      <h1 className="text-2xl font-semibold text-center mb-6">
+        Add New Project
+      </h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div>
-          <Label htmlFor="projectName" className="block text-sm font-medium text-gray-700">
+          <Label
+            htmlFor="projectName"
+            className="block text-sm font-medium text-gray-700"
+          >
             Project Name
           </Label>
           <TextInput
@@ -92,7 +101,10 @@ function DashProjects() {
           />
         </div>
         <div>
-          <Label htmlFor="projectDesc" className="block text-sm font-medium text-gray-700">
+          <Label
+            htmlFor="projectDesc"
+            className="block text-sm font-medium text-gray-700"
+          >
             Project Description
           </Label>
           <Textarea
@@ -107,13 +119,16 @@ function DashProjects() {
           />
         </div>
         <div>
-          <Label htmlFor="users" className="block text-sm font-medium text-gray-700">
+          <Label
+            htmlFor="users"
+            className="block text-sm font-medium text-gray-700"
+          >
             Select Project Managers
           </Label>
           <Select
             id="users"
             name="users"
-            value={users.filter(user => formData.user.includes(user.value))}
+            value={users.filter((user) => formData.user.includes(user.value))}
             onChange={handleUserChange}
             options={users}
             isMulti
@@ -131,6 +146,12 @@ function DashProjects() {
           </Button>
         </div>
       </form>
+
+      {success && (
+        <Alert color="success" className="mt-5">
+          {success}
+        </Alert>
+      )}
     </div>
   );
 }

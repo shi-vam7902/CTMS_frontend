@@ -105,3 +105,32 @@ export const getUser = async (userId) => {
     );
   }
 };
+
+
+export const getUserTasks = async (userId) => {
+  try {
+    const response = await fetch(`/server/api/users/${userId}/tasks`, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+    console.log("getUserTasks", data)
+
+    if (!response.ok) {
+      const errorMessage =
+        data.errors && data.errors.length > 0
+          ? data.errors.join(", ")
+          : data.message;
+      throw new Error(errorMessage || "GET User failed.");
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.message || "Get User  failed. Please try again later."
+    );
+  }
+};
+
+
+

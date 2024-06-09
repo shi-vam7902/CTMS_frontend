@@ -26,14 +26,22 @@ function FooterCom() {
             <span className="px-3 py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white tracking-wider">
               CTMS
             </span>
+            Website
           </Link>
         </div>
         <div className="grid gap-6 mt-6 sm:grid-cols-2 md:grid-cols-3">
           <div>
             <FooterTitle title="About" />
             <FooterLinkGroup col>
+              <FooterLink
+                href="https://www.100jsprojects.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                100 JS Project
+              </FooterLink>
               <FooterLink href="#" target="_blank" rel="noopener noreferrer">
-                Connect With Us
+                Krish's Blog
               </FooterLink>
             </FooterLinkGroup>
           </div>
@@ -43,6 +51,9 @@ function FooterCom() {
             <FooterLinkGroup col>
               <FooterLink href="#" target="_blank" rel="noopener noreferrer">
                 Github
+              </FooterLink>
+              <FooterLink href="#" target="_blank" rel="noopener noreferrer">
+                Discord
               </FooterLink>
             </FooterLinkGroup>
           </div>
@@ -63,12 +74,14 @@ function FooterCom() {
         <div className="flex flex-col items-center justify-between sm:flex-row mt-6">
           <FooterCopyright
             href="#"
-            by="Shivam Shah"
+            by="Krish's blog"
             year={new Date().getFullYear()}
           />
           <div className="flex gap-5 justify-center mt-4 sm:mt-0">
-            <FooterIcon href="https://github.com/StefSalv07" icon={BsGithub} />
-            <FooterIcon href="https://github.com/shi-vam7902" icon={BsGithub} />
+            <FooterIcon href="#" icon={BsFacebook} />
+            <FooterIcon href="#" icon={BsGithub} />
+            <FooterIcon href="#" icon={BsTwitter} />
+            <FooterIcon href="#" icon={BsInstagram} />
           </div>
         </div>
       </div>

@@ -4,13 +4,11 @@ import storage from 'redux-persist/lib/storage';
 import authReducer from '../features/auth/authSlice';
 import themeReducer from '../features/theme/themeSlice';
 import userReducer from '../features/user/userSlice';
-import commentReducer from '../features/comment/commentSlice';
 import projectsReducer from "../features/project/projectSlice";
 const rootReducer = combineReducers({
   auth: authReducer,
   theme: themeReducer,
   user: userReducer,
-  comment: commentReducer,
   projects:projectsReducer
 });
 

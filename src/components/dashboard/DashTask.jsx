@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Button, Label, Textarea, TextInput } from "flowbite-react";
+import { Button, Label, Textarea, TextInput, Alert } from "flowbite-react";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersAsync } from "../../features/user/userSlice";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import {
-  addProjectAsync,
   getAllProjectsAsync,
-  addTasksAsync,
+  addTaskAsync,
 } from "../../features/project/projectSlice";
 
 function DashTask() {
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const currentUser = useSelector(selectCurrentUser);
   const [formData, setFormData] = useState({
     taskName: "",
@@ -19,7 +20,7 @@ function DashTask() {
     assignedTo: [], // Set status directly in the initial state
     project: "", //id
     reportTo: currentUser._id,
-    taskStatus: "6661b6426d2c4415b4d7e210",
+    taskStatus: "pending",
   });
 
   const [users, setUsers] = useState([]);
@@ -81,19 +82,24 @@ function DashTask() {
     e.preventDefault();
     const updatedFormData = {
       ...formData,
-      taskStatus: "6661b6426d2c4415b4d7e210",
+      taskStatus: "pending",
     }; // Ensure taskStatus is included
-    dispatch(addTasksAsync(updatedFormData))
+    dispatch(addTaskAsync(updatedFormData))
       .unwrap()
       .then((response) => {
-        console.log("Task added successfully", response);
-        setFormData({
-          taskName: "",
-          taskDesc: "",
-          assignedTo: [],
-          project: "",
-          taskStatus: "6661b6426d2c4415b4d7e210", // Reset taskStatus in the form data
-        });
+        if (response.message === "Task Already Exists") {
+          setError("Task Already Exists");
+          } else {
+          console.log("Task added successfully", response);
+          setSuccess("Task added successfully")
+          setFormData({
+            taskName: "",
+            taskDesc: "",
+            assignedTo: [],
+            project: "",
+            taskStatus: "pending", // Reset taskStatus in the form data
+          });
+        }
       })
       .catch((error) => {
         console.error("Error adding task:", error);
@@ -187,6 +193,17 @@ function DashTask() {
           </Button>
         </div>
       </form>
+      {success && (
+        <Alert color="success" className="mt-5">
+          {success}
+        </Alert>
+      )}
+
+      {error && (
+        <Alert color="failure" className="mt-5">
+          {error}
+        </Alert>
+      )}
     </div>
   );
 }
